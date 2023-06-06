@@ -67,7 +67,7 @@ const removePlayer = async (playerId) => {
  */
 const renderAllPlayers = (playerList) => {
     try {
-        
+
     } catch (err) {
         console.error('Uh oh, trouble rendering players!', err);
     }
@@ -80,7 +80,7 @@ const renderAllPlayers = (playerList) => {
  */
 const renderNewPlayerForm = () => {
     try {
-        
+
     } catch (err) {
         console.error('Uh oh, trouble rendering the new player form!', err);
     }
