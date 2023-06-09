@@ -14,7 +14,7 @@ const fetchAllPlayers = async () => {
     try {
         const response = await fetch(`${APIURL}players/`);
         const players = response.json();
-        console.log(players);
+    //    console.log(players);
         return players;
     } catch (err) {
         console.error('Uh oh, trouble fetching players!', err);
@@ -47,10 +47,20 @@ const addNewPlayer = async (playerObj) => {
     console.error('Oops, something went wrong with adding that player!', err);
 }
 };
-
+/* const response = await fetch(`${PARTIES_API_URL}/${id}`, {
+      method: 'DELETE'
+    });
+    const party = await response.json();
+    return party;
+    */
 const removePlayer = async (playerId) => {
     try {
-
+        const response = await fetch(`${APIURL}players/${playerId}/`,
+        {
+            method: 'DELETE'
+        });
+        const player = response.json();
+        //not supposed to return anything
     } catch (err) {
         console.error(
             `Whoops, trouble removing player #${playerId} from the roster!`,
