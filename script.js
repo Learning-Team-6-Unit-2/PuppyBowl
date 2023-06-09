@@ -209,22 +209,23 @@ const renderNewPlayerForm = () => {
         //createdAt and updatedAt should be created by the app, not the user. exclude them from the form
         let form = `
         <form>
-            Name: <input type="text" name="name" placeholder="" required><br><br>
-            ID: <input type="number" name="id" placeholder="" required><br><br>
-            Breed: <input type="text" name="breed" placeholder="" required><br><br>
-            Status: <input type="text" name="status" placeholder="" required><br><br>
-            ImageUrl: <input type="text" name="imageUrl" placeholder="" required><br><br>
-            TeamId: <input type="number" name="teamId" placeholder="" required><br><br>
-            CohortId: <input type="number" name="cohortId" placeholder="" required><br><br>
-
-            <button class="addPlayer-button" type="button">Add New Player</button>
+            <label>Name: </label><input type="text" name="name" placeholder="" required><br><br>
+            <label>ID: </label><input type="number" name="id" placeholder="" required><br><br>
+            <label>Breed: </label><input type="text" name="breed" placeholder="" required><br><br>
+            <label>Status: </label><select name="status">
+                <option value="bench">Bench</option>
+                <option value="field">Field</option>
+            </select><br><br>
+            <label>ImageUrl: </label><input type="url" name="imageUrl" placeholder="" required><br><br>
+            <label>TeamId: </label><input type="number" name="teamId" placeholder="" required><br><br>
+            <label>CohortId: </label><input type="number" name="cohortId" placeholder="" required><br><br>
+            <input type="submit" value="Add new Player">
         </form>
         `
         newPlayerFormContainer.innerHTML = form;
 
-        //add a new player button that takes name, id, breed, status, imageurl, createdAt, updatedAt, teamId, and cohortId
-        const newPlayerButton = newPlayerFormContainer.querySelector('.addPlayer-button');
-        newPlayerButton.addEventListener('click', async (event) => {
+        //for submit events add the eventlistener to the entire form
+        newPlayerFormContainer.addEventListener('submit', async (event) => {
             event.preventDefault();
             const name = document.getElementsByName('name')[0].value;
             const id = document.getElementsByName('id')[0].value;
