@@ -6,6 +6,18 @@ const cohortName = '2302-ACC-PT-WEB-PT-A';
 // Use the APIURL variable for fetch requests
 const APIURL = `https://fsa-puppy-bowl.herokuapp.com/api/${cohortName}/`;
 
+
+// helper function to toggle parties visibility
+function togglePlayerListVisibility(displayVal,) {
+    const playerElements = document.getElementsByClassName('player');
+    for (const playerElement of playerElements) {
+        playerElement.style.display = displayVal;
+    }
+
+    //also toggle the form
+    newPlayerFormContainer.style.display = displayVal;
+}
+
 /**
  * It fetches all players from the API and returns them
  * @returns An array of objects.
@@ -14,8 +26,8 @@ const fetchAllPlayers = async () => {
     try {
         const response = await fetch(`${APIURL}players/`);
         const players = response.json();
-        console.log(players);
-        return players;
+        console.log(players.players);
+        return players.players; //the actual player array in the promise object
     } catch (err) {
         console.error('Uh oh, trouble fetching players!', err);
     }
@@ -80,6 +92,15 @@ const fetchAllTeams = async () => {
     }
 }
 
+// render a single party by id
+const renderSinglePlayerById = async (id) => {
+    try {
+
+    } catch (err) {
+        console.error(`Uh oh, trouble rendering player #${playerId}!`, err);
+    }
+}
+
 /**
  * It takes an array of player objects, loops through them, and creates a string of HTML for each
  * player, then adds that string to a larger string of HTML that represents all the players. 
@@ -102,7 +123,44 @@ const fetchAllTeams = async () => {
  */
 const renderAllPlayers = (playerList) => {
     try {
+        playerContainer.innerHTML = '';
+        playerList.forEach((player) => {
+            const playerElement = document.createElement('div');
+            playerElement.classList.add('player'); //class for styling purposes
+            playerElement.innerHTML = `
+            <h2>${player.name}</h2>
+            <p>${player.id}</p>
+            <p>${player.breed}</p>
+            <p>${player.status}</p>
+            <p>${player.imgUrl}</p>
+            <p>${player.createdAt}</p>
+            <p>${player.updatedAt}</p>
+            <p>${player.teamId}</p>
+            <p>${player.cohortId}</p>
+            <button class="details-button" data-id="${player.id}">See details</button>
+            <button class="delete-button" data-id="${player.id}">Remove from roster</button>
+            `;
 
+            playerContainer.appendChild(playerElement);
+
+            //see details
+            const detailsButton = playerElement.querySelector('.details-button');
+            detailsButton.addEventListener('click', async (event) => {
+                //hide the list of players (to create a clean slate for a detailed player to show)
+                togglePlayerListVisibility('none');
+
+                //show the details of the player clicked
+                renderSinglePlayerById(event.target.dataset.id);
+            });
+
+            //delete player
+            const deleteButton = playerElement.querySelector('.delete-button');
+            deleteButton.addEventListener('click', async (event) => {
+                //refresh the page to show the remaining players after the deletion event
+                await removePlayer(event.target.dataset.id);
+                await window.location.reload();
+            });
+        });
     } catch (err) {
         console.error('Uh oh, trouble rendering players!', err);
     }
