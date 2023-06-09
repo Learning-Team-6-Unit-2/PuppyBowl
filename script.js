@@ -25,8 +25,8 @@ function togglePlayerListVisibility(displayVal,) {
 const fetchAllPlayers = async () => {
     try {
         const response = await fetch(`${APIURL}players/`);
-        const players = response.json();
-        console.log(players.players);
+        const players = await response.json();
+        console.log(players);
         return players.players; //the actual player array in the promise object
     } catch (err) {
         console.error('Uh oh, trouble fetching players!', err);
@@ -36,7 +36,7 @@ const fetchAllPlayers = async () => {
 const fetchSinglePlayer = async (playerId) => {
     try {
         const response = await fetch(`${APIURL}players/${playerId}/`);
-        const player = response.json();
+        const player = await response.json();
         return player;
     } catch (err) {
         console.error(`Oh no, trouble fetching player #${playerId}!`, err);
@@ -59,19 +59,14 @@ const addNewPlayer = async (playerObj) => {
         console.error('Oops, something went wrong with adding that player!', err);
     }
 };
-/* const response = await fetch(`${PARTIES_API_URL}/${id}`, {
-      method: 'DELETE'
-    });
-    const party = await response.json();
-    return party;
-    */
+
 const removePlayer = async (playerId) => {
     try {
         const response = await fetch(`${APIURL}players/${playerId}/`,
             {
                 method: 'DELETE'
             });
-        const player = response.json();
+        const player = await response.json();
         //not supposed to return anything
     } catch (err) {
         console.error(
@@ -92,10 +87,36 @@ const fetchAllTeams = async () => {
     }
 }
 
-// render a single party by id
+// render a single player by id
 const renderSinglePlayerById = async (id) => {
     try {
+        //fetch player details from server
+        const player = await fetchSinglePlayer(id);
 
+        //create a new HTML element to display player details
+        const playerDetailsElememt = document.createElement('div');
+        playerDetailsElememt.classList.add('player-details'); //for styling purposes
+        playerDetailsElememt.innerHTML = `
+            <h2>${player.name}</h2>
+            <p>${player.id}</p>
+            <p>${player.breed}</p>
+            <p>${player.status}</p>
+            <p>${player.imgUrl}</p>
+            <p>${player.createdAt}</p>
+            <p>${player.updatedAt}</p>
+            <p>${player.teamId}</p>
+            <p>${player.cohortId}</p>
+            <button class="close-button">Close</button>
+        `;
+
+        playerContainer.appendChild(playerDetailsElememt);
+
+        // add event listener to close button
+        const closeButton = playerDetailsElememt.querySelector('.close-button');
+        closeButton.addEventListener('click', () => {
+            playerDetailsElememt.remove();
+            togglePlayerListVisibility('block');
+        });
     } catch (err) {
         console.error(`Uh oh, trouble rendering player #${playerId}!`, err);
     }
@@ -123,6 +144,7 @@ const renderSinglePlayerById = async (id) => {
  */
 const renderAllPlayers = (playerList) => {
     try {
+        console.log(playerList);
         playerContainer.innerHTML = '';
         playerList.forEach((player) => {
             const playerElement = document.createElement('div');
@@ -161,6 +183,7 @@ const renderAllPlayers = (playerList) => {
                 await window.location.reload();
             });
         });
+        return playerContainer;
     } catch (err) {
         console.error('Uh oh, trouble rendering players!', err);
     }
@@ -181,9 +204,10 @@ const renderNewPlayerForm = () => {
 
 const init = async () => {
     const players = await fetchAllPlayers();
+    console.log(players);
     renderAllPlayers(players);
 
-    renderNewPlayerForm();
+     renderNewPlayerForm();
 }
 
 init();
