@@ -25,9 +25,8 @@ function togglePlayerListVisibility(displayVal,) {
 const fetchAllPlayers = async () => {
     try {
         const response = await fetch(`${APIURL}players/`);
-        const players = await response.json();
-        console.log(players);
-        return players.players; //the actual player array in the promise object
+        const players = await response.json(); //a promise, not the actual data. The data needs to be extracted
+        return players.data.players; //the actual player array in the promise object
     } catch (err) {
         console.error('Uh oh, trouble fetching players!', err);
     }
@@ -101,7 +100,7 @@ const renderSinglePlayerById = async (id) => {
             <p>${player.id}</p>
             <p>${player.breed}</p>
             <p>${player.status}</p>
-            <p>${player.imgUrl}</p>
+            <p><img src = ${player.imageUrl}></p>
             <p>${player.createdAt}</p>
             <p>${player.updatedAt}</p>
             <p>${player.teamId}</p>
@@ -154,7 +153,7 @@ const renderAllPlayers = (playerList) => {
             <p>${player.id}</p>
             <p>${player.breed}</p>
             <p>${player.status}</p>
-            <p>${player.imgUrl}</p>
+            <p><img src = ${player.imageUrl}></p>
             <p>${player.createdAt}</p>
             <p>${player.updatedAt}</p>
             <p>${player.teamId}</p>
@@ -204,10 +203,12 @@ const renderNewPlayerForm = () => {
 
 const init = async () => {
     const players = await fetchAllPlayers();
-    console.log(players);
+    //console.log(players);
+    //console.log(typeof(players));
+    //console.log(Array.isArray(players));
     renderAllPlayers(players);
 
-     renderNewPlayerForm();
+    renderNewPlayerForm();
 }
 
 init();
