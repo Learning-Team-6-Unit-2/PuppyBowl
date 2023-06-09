@@ -125,7 +125,7 @@ const renderSinglePlayerById = async (id) => {
         const closeButton = playerDetailsElememt.querySelector('.close-button');
         closeButton.addEventListener('click', () => {
             playerDetailsElememt.remove();
-            togglePlayerListVisibility('block');
+            togglePlayerListVisibility('flex');
         });
     } catch (err) {
         console.error(`Uh oh, trouble rendering player #${playerId}!`, err);
