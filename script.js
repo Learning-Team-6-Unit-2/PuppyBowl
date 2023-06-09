@@ -107,7 +107,7 @@ const renderSinglePlayerById = async (id) => {
         const playerDetailsElememt = document.createElement('div');
         playerDetailsElememt.classList.add('player-details'); //for styling purposes
         playerDetailsElememt.innerHTML = `
-            <h2>${player.name}</h2>
+            <h1>${player.name}</h1>
             <p>${player.id}</p>
             <p>${player.breed}</p>
             <p>${player.status}</p>
@@ -160,7 +160,7 @@ const renderAllPlayers = (playerList) => {
             const playerElement = document.createElement('div');
             playerElement.classList.add('player'); //class for styling purposes
             playerElement.innerHTML = `
-            <h2>${player.name}</h2>
+            <h1>${player.name}</h1>
             <p>${player.id}</p>
             <p>${player.breed}</p>
             <p>${player.status}</p>
