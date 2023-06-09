@@ -14,7 +14,7 @@ const fetchAllPlayers = async () => {
     try {
         const response = await fetch(`${APIURL}players/`);
         const players = response.json();
-    //    console.log(players);
+        console.log(players);
         return players;
     } catch (err) {
         console.error('Uh oh, trouble fetching players!', err);
@@ -44,8 +44,8 @@ const addNewPlayer = async (playerObj) => {
         const newPlayer = await response.json();
         return newPlayer();
     } catch (err) {
-    console.error('Oops, something went wrong with adding that player!', err);
-}
+        console.error('Oops, something went wrong with adding that player!', err);
+    }
 };
 /* const response = await fetch(`${PARTIES_API_URL}/${id}`, {
       method: 'DELETE'
@@ -56,9 +56,9 @@ const addNewPlayer = async (playerObj) => {
 const removePlayer = async (playerId) => {
     try {
         const response = await fetch(`${APIURL}players/${playerId}/`,
-        {
-            method: 'DELETE'
-        });
+            {
+                method: 'DELETE'
+            });
         const player = response.json();
         //not supposed to return anything
     } catch (err) {
@@ -68,6 +68,17 @@ const removePlayer = async (playerId) => {
         );
     }
 };
+
+//optional. get an array of all the players on a specific team
+const fetchAllTeams = async () => {
+    try {
+        const response = await fetch(`${APIURL}teams/`);
+        const teams = await response.json();
+        return teams;
+    } catch (err) {
+        console.error(`'Oh no, trouble fetching teams!`, err);
+    }
+}
 
 /**
  * It takes an array of player objects, loops through them, and creates a string of HTML for each
