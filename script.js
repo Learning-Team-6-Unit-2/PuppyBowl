@@ -36,7 +36,7 @@ const fetchSinglePlayer = async (playerId) => {
     try {
         const response = await fetch(`${APIURL}players/${playerId}/`);
         const player = await response.json();
-        return player;
+        return player.data.player; //the actual player in the promise object
     } catch (err) {
         console.error(`Oh no, trouble fetching player #${playerId}!`, err);
     }
@@ -46,14 +46,25 @@ const addNewPlayer = async (playerObj) => {
     try {
         const response = await fetch(`${APIURL}players/`,
             {
-                method: 'POST',
+                method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json'
                 },
+             /*   body: JSON.stringify({
+                    name: playerObj.name,
+                    id: playerObj.id,
+                    breed: playerObj.breed,
+                    status:playerObj.status,
+                    imageUrl: playerObj.imageUrl,
+                    createdAt: playerObj.createdAt,
+                    teamId: playerObj.teamId,
+                    cohortId: playerObj.cohortId
+                })*/
                 body: JSON.stringify(playerObj)
             });
         const newPlayer = await response.json();
-        return newPlayer();
+        console.log(typeof(newPlayer))
+        return newPlayer;
     } catch (err) {
         console.error('Oops, something went wrong with adding that player!', err);
     }
@@ -143,7 +154,7 @@ const renderSinglePlayerById = async (id) => {
  */
 const renderAllPlayers = (playerList) => {
     try {
-        console.log(playerList);
+     //   console.log(playerList);
         playerContainer.innerHTML = '';
         playerList.forEach((player) => {
             const playerElement = document.createElement('div');
@@ -195,7 +206,53 @@ const renderAllPlayers = (playerList) => {
  */
 const renderNewPlayerForm = () => {
     try {
+        let form = `
+        <form>
+            Name: <input type="text" name="name" placeholder="" required><br><br>
+            ID: <input type="number" name="id" placeholder="" required><br><br>
+            Breed: <input type="text" name="breed" placeholder="" required><br><br>
+            Status: <input type="text" name="status" placeholder="" required><br><br>
+            ImageUrl: <input type="text" name="imageUrl" placeholder="" required><br><br>
+            CreatedAt: <input type="time" name="createdAt" placeholder="" required><br><br>
+            UpdatedAt: <input type="time" name="updatedAt" placeholder="" required><br><br>
+            TeamId: <input type="number" name="teamId" placeholder="" required><br><br>
+            CohortId: <input type="number" name="cohortId" placeholder="" required><br><br>
 
+            <button class="addPlayer-button" type="button">Add New Player</button>
+        </form>
+        `
+        newPlayerFormContainer.innerHTML = form;
+
+        //add a new player button that takes name, id, breed, status, imageurl, createdAt, updatedAt, teamId, and cohortId
+        const newPlayerButton = newPlayerFormContainer.querySelector('.addPlayer-button');
+        newPlayerButton.addEventListener('click', async (event) => {
+            event.preventDefault();
+            const name = document.getElementsByName('name')[0].value;
+            const id = document.getElementsByName('id')[0].value;
+            const breed = document.getElementsByName('breed')[0].value;
+            const status = document.getElementsByName('status')[0].value;
+            const imageUrl = document.getElementsByName('imageUrl')[0].value;
+            const createdAt = document.getElementsByName('createdAt')[0].value;
+            const updatedAt = document.getElementsByName('updatedAt')[0].value;
+            const teamId = document.getElementsByName('teamId')[0].value;
+            const cohortId = document.getElementsByName('cohortId')[0].value;
+
+            const newPlayer = {
+                id,
+                name,
+                breed,
+                status,
+                imageUrl,
+                createdAt,
+                updatedAt,
+                teamId,
+                cohortId
+            }
+
+            await addNewPlayer(newPlayer);
+            console.log(newPlayer);
+            await window.location.reload();
+        });
     } catch (err) {
         console.error('Uh oh, trouble rendering the new player form!', err);
     }
