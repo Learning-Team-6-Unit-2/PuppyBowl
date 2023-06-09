@@ -46,24 +46,24 @@ const addNewPlayer = async (playerObj) => {
     try {
         const response = await fetch(`${APIURL}players/`,
             {
-                method: 'POST', 
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-             /*   body: JSON.stringify({
-                    name: playerObj.name,
-                    id: playerObj.id,
-                    breed: playerObj.breed,
-                    status:playerObj.status,
-                    imageUrl: playerObj.imageUrl,
-                    createdAt: playerObj.createdAt,
-                    teamId: playerObj.teamId,
-                    cohortId: playerObj.cohortId
-                })*/
+                /*   body: JSON.stringify({
+                       name: playerObj.name,
+                       id: playerObj.id,
+                       breed: playerObj.breed,
+                       status:playerObj.status,
+                       imageUrl: playerObj.imageUrl,
+                       createdAt: playerObj.createdAt,
+                       teamId: playerObj.teamId,
+                       cohortId: playerObj.cohortId
+                   })*/
                 body: JSON.stringify(playerObj)
             });
         const newPlayer = await response.json();
-        console.log(typeof(newPlayer))
+        console.log(typeof (newPlayer))
         return newPlayer;
     } catch (err) {
         console.error('Oops, something went wrong with adding that player!', err);
@@ -108,14 +108,14 @@ const renderSinglePlayerById = async (id) => {
         playerDetailsElememt.classList.add('player-details'); //for styling purposes
         playerDetailsElememt.innerHTML = `
             <h1>${player.name}</h1>
-            <p>${player.id}</p>
-            <p>${player.breed}</p>
-            <p>${player.status}</p>
             <p><img src = ${player.imageUrl}></p>
-            <p>${player.createdAt}</p>
-            <p>${player.updatedAt}</p>
-            <p>${player.teamId}</p>
-            <p>${player.cohortId}</p>
+            <p><strong>ID:</strong> ${player.id}</p>
+            <p><strong>Breed:</strong> ${player.breed}</p>
+            <p><strong>Status:</strong> ${player.status}</p>
+            <p><strong>Created at:</strong> ${player.createdAt}</p>
+            <p><strong>Updated at:</strong> ${player.updatedAt}</p>
+            <p><strong>Team ID:</strong> ${player.teamId}</p>
+            <p><strong>Cohort ID:</strong> ${player.cohortId}</p>
             <button class="close-button">Close</button>
         `;
 
@@ -154,21 +154,21 @@ const renderSinglePlayerById = async (id) => {
  */
 const renderAllPlayers = (playerList) => {
     try {
-     //   console.log(playerList);
+        //   console.log(playerList);
         playerContainer.innerHTML = '';
         playerList.forEach((player) => {
             const playerElement = document.createElement('div');
             playerElement.classList.add('player'); //class for styling purposes
             playerElement.innerHTML = `
             <h1>${player.name}</h1>
-            <p>${player.id}</p>
-            <p>${player.breed}</p>
-            <p>${player.status}</p>
             <p><img src = ${player.imageUrl}></p>
-            <p>${player.createdAt}</p>
-            <p>${player.updatedAt}</p>
-            <p>${player.teamId}</p>
-            <p>${player.cohortId}</p>
+            <p><strong>ID:</strong> ${player.id}</p>
+            <p><strong>Breed:</strong> ${player.breed}</p>
+            <p><strong>Status:</strong> ${player.status}</p>
+            <p><strong>Created at:</strong> ${player.createdAt}</p>
+            <p><strong>Updated at:</strong> ${player.updatedAt}</p>
+            <p><strong>Team ID:</strong> ${player.teamId}</p>
+            <p><strong>Cohort ID:</strong> ${player.cohortId}</p>
             <button class="details-button" data-id="${player.id}">See details</button>
             <button class="delete-button" data-id="${player.id}">Remove from roster</button>
             `;
@@ -206,6 +206,7 @@ const renderAllPlayers = (playerList) => {
  */
 const renderNewPlayerForm = () => {
     try {
+        //createdAt and updatedAt should be created by the app, not the user. exclude them from the form
         let form = `
         <form>
             Name: <input type="text" name="name" placeholder="" required><br><br>
@@ -213,8 +214,6 @@ const renderNewPlayerForm = () => {
             Breed: <input type="text" name="breed" placeholder="" required><br><br>
             Status: <input type="text" name="status" placeholder="" required><br><br>
             ImageUrl: <input type="text" name="imageUrl" placeholder="" required><br><br>
-            CreatedAt: <input type="time" name="createdAt" placeholder="" required><br><br>
-            UpdatedAt: <input type="time" name="updatedAt" placeholder="" required><br><br>
             TeamId: <input type="number" name="teamId" placeholder="" required><br><br>
             CohortId: <input type="number" name="cohortId" placeholder="" required><br><br>
 
@@ -232,8 +231,13 @@ const renderNewPlayerForm = () => {
             const breed = document.getElementsByName('breed')[0].value;
             const status = document.getElementsByName('status')[0].value;
             const imageUrl = document.getElementsByName('imageUrl')[0].value;
-            const createdAt = document.getElementsByName('createdAt')[0].value;
-            const updatedAt = document.getElementsByName('updatedAt')[0].value;
+
+            //createdAt and updateAt should be created by the app
+            const createdAt = new Date().getTime();
+
+            //updatedAt should be the same as createdAt when adding a new player. Change updatedAt if the player is edited and saved
+            const updatedAt = createdAt;
+
             const teamId = document.getElementsByName('teamId')[0].value;
             const cohortId = document.getElementsByName('cohortId')[0].value;
 

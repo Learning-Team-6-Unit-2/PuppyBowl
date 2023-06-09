@@ -23,6 +23,7 @@ p {
 img {
   border-radius: 5%;
   max-width: 100%;
+  max-height: 100%;
 }
 
 #new-player-form {
@@ -30,7 +31,7 @@ img {
   flex-flow: column wrap;
   align-content: flex-start;
   margin: 10px;
-  padding: 10px;
+  padding: 20px;
 
   background-color: snow;
   border: 5px solid lime;
@@ -44,7 +45,7 @@ img {
 #all-players-container {
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-evenly;
+  justify-content: space-between;
 
   text-align: left;
   margin-top: 20px;
@@ -52,9 +53,13 @@ img {
 }
 
 .player {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
   background-color: snow;
   width: 48%;
-  padding: 10px;
+  padding: 20px;
   border: 5px solid skyblue;
   border-radius: 5%;
 }
