@@ -23,7 +23,9 @@ const fetchAllPlayers = async () => {
 
 const fetchSinglePlayer = async (playerId) => {
     try {
-
+        const response = await fetch(`${APIURL}players/${playerId}/`);
+        const player = response.json();
+        return player;
     } catch (err) {
         console.error(`Oh no, trouble fetching player #${playerId}!`, err);
     }
@@ -31,10 +33,19 @@ const fetchSinglePlayer = async (playerId) => {
 
 const addNewPlayer = async (playerObj) => {
     try {
-
+        const response = await fetch(`${APIURL}players/`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(playerObj)
+            });
+        const newPlayer = await response.json();
+        return newPlayer();
     } catch (err) {
-        console.error('Oops, something went wrong with adding that player!', err);
-    }
+    console.error('Oops, something went wrong with adding that player!', err);
+}
 };
 
 const removePlayer = async (playerId) => {
