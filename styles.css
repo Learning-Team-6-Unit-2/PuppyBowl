@@ -7,7 +7,10 @@
 button {
   margin: 2px 0px;
   border-radius: 5%;
-  width: 150px;
+  height: 40px;;
+  color: white;
+  font-size: 20px;
+  border: none;
 }
 
 p {
@@ -45,7 +48,12 @@ input {
 }
 
 #new-player-form input[type=submit] {
-  border: 2px solid forestgreen;
+  font-size: 20px;
+  height: 40px;
+  width: 100%;
+  color: white;
+  background-color: forestgreen;
+  border: none;
 }
 
 #all-players-container {
@@ -77,15 +85,23 @@ input {
 
   background-color: snow;
   width: 100%;
-  padding: 20px;
+  padding: 40px;
   border: 5px solid skyblue;
   border-radius: 5%;
 }
 
 .details-button {
-  border: 2px solid slateblue;
+  background-color: slateblue;
+}
+
+.edit-button {
+  background-color: orange;
 }
 
 .delete-button {
-  border: 2px solid red;
+  background-color:  red;
+}
+
+.close-button {
+  background-color: darkslategrey;
 }

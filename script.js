@@ -7,7 +7,7 @@ const cohortName = '2302-ACC-PT-WEB-PT-A';
 const APIURL = `https://fsa-puppy-bowl.herokuapp.com/api/${cohortName}/`;
 
 
-// helper function to toggle parties visibility
+// helper function to toggle player visibility
 function togglePlayerListVisibility(displayVal,) {
     const playerElements = document.getElementsByClassName('player');
     for (const playerElement of playerElements) {
@@ -170,6 +170,7 @@ const renderAllPlayers = (playerList) => {
             <p><strong>Team ID:</strong> ${player.teamId}</p>
             <p><strong>Cohort ID:</strong> ${player.cohortId}</p>
             <button class="details-button" data-id="${player.id}">See details</button>
+            <button class="edit-button" data-id="${player.id}">Edit player</button>
             <button class="delete-button" data-id="${player.id}">Remove from roster</button>
             `;
 
@@ -184,6 +185,13 @@ const renderAllPlayers = (playerList) => {
                 //show the details of the player clicked
                 renderSinglePlayerById(event.target.dataset.id);
             });
+
+            //edit player
+            const editButton = playerElement.querySelector('.edit-button');
+            editButton.addEventListener('click', async (event) => {
+                togglePlayerListVisibility('none');
+                renderUpdatedPlayerForm(event.target.dataset.id);
+            })
 
             //delete player
             const deleteButton = playerElement.querySelector('.delete-button');
@@ -224,6 +232,7 @@ const renderNewPlayerForm = () => {
         `
         newPlayerFormContainer.innerHTML = form;
 
+        //https://betterprogramming.pub/click-vs-submit-eventlisteners-536b62be9359
         //for submit events add the eventlistener to the entire form
         newPlayerFormContainer.addEventListener('submit', async (event) => {
             event.preventDefault();
@@ -260,6 +269,15 @@ const renderNewPlayerForm = () => {
         });
     } catch (err) {
         console.error('Uh oh, trouble rendering the new player form!', err);
+    }
+}
+
+//show a form that looks like player details that allows the user to update existing data if the edit button is pressed
+const renderUpdatedPlayerForm = async (id) => {
+    try {
+
+    } catch (err) {
+        console.error(`Uh oh, trouble editing player #${playerId}!`, err);
     }
 }
 
