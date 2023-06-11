@@ -70,6 +70,23 @@ const addNewPlayer = async (playerObj) => {
     }
 };
 
+const updatePlayer = async (playerObj) => {
+    try {
+        const response = await fetch(`${APIURL}players/`,
+            {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(playerObj)
+            });
+        const updatedPlayer = await response.json();
+        return updatedPlayer;
+    } catch (err) {
+        console.error('Oops, something went wrong with updating that player!', err);
+    }
+}
+
 const removePlayer = async (playerId) => {
     try {
         const response = await fetch(`${APIURL}players/${playerId}/`,
@@ -275,7 +292,36 @@ const renderNewPlayerForm = () => {
 //show a form that looks like player details that allows the user to update existing data if the edit button is pressed
 const renderUpdatedPlayerForm = async (id) => {
     try {
+        //fetch player details from server
+        const player = await fetchSinglePlayer(id);
 
+        //create a form that contains all of the player's current data
+        const playerUpdateForm =
+
+    /*    //create a new HTML element to display player details
+        const playerDetailsElememt = document.createElement('div');
+        playerDetailsElememt.classList.add('player-details'); //for styling purposes
+        playerDetailsElememt.innerHTML = `
+            <h1>${player.name}</h1>
+            <p><img src = ${player.imageUrl}></p>
+            <p><strong>ID:</strong> ${player.id}</p>
+            <p><strong>Breed:</strong> ${player.breed}</p>
+            <p><strong>Status:</strong> ${player.status}</p>
+            <p><strong>Created at:</strong> ${player.createdAt}</p>
+            <p><strong>Updated at:</strong> ${player.updatedAt}</p>
+            <p><strong>Team ID:</strong> ${player.teamId}</p>
+            <p><strong>Cohort ID:</strong> ${player.cohortId}</p>
+            <button class="close-button">Close</button>
+        `;
+
+        playerContainer.appendChild(playerDetailsElememt);
+
+        // add event listener to close button
+        const closeButton = playerDetailsElememt.querySelector('.close-button');
+        closeButton.addEventListener('click', () => {
+            playerDetailsElememt.remove();
+            togglePlayerListVisibility('flex');
+        });*/
     } catch (err) {
         console.error(`Uh oh, trouble editing player #${playerId}!`, err);
     }
