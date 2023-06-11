@@ -81,6 +81,7 @@ const updatePlayer = async (playerObj) => {
                 body: JSON.stringify(playerObj)
             });
         const updatedPlayer = await response.json();
+        console.log(updatedPlayer);
         return updatedPlayer;
     } catch (err) {
         console.error('Oops, something went wrong with updating that player!', err);
@@ -237,9 +238,9 @@ const renderNewPlayerForm = () => {
             <label>Name: </label><input type="text" name="name" placeholder="" required><br><br>
             <label>ID: </label><input type="number" name="id" placeholder="" required><br><br>
             <label>Breed: </label><input type="text" name="breed" placeholder="" required><br><br>
-            <label>Status: </label><select name="status">
-                <option value="bench">Bench</option>
-                <option value="field">Field</option>
+            <label>Status: </label><select name="status" required>
+                <option value="bench">bench</option>
+                <option value="field">field</option>
             </select><br><br>
             <label>ImageUrl: </label><input type="url" name="imageUrl" placeholder="" required><br><br>
             <label>TeamId: </label><input type="number" name="teamId" placeholder="" required><br><br>
@@ -296,32 +297,65 @@ const renderUpdatedPlayerForm = async (id) => {
         const player = await fetchSinglePlayer(id);
 
         //create a form that contains all of the player's current data
-        const playerUpdateForm =
-
-    /*    //create a new HTML element to display player details
-        const playerDetailsElememt = document.createElement('div');
-        playerDetailsElememt.classList.add('player-details'); //for styling purposes
-        playerDetailsElememt.innerHTML = `
-            <h1>${player.name}</h1>
-            <p><img src = ${player.imageUrl}></p>
-            <p><strong>ID:</strong> ${player.id}</p>
-            <p><strong>Breed:</strong> ${player.breed}</p>
-            <p><strong>Status:</strong> ${player.status}</p>
-            <p><strong>Created at:</strong> ${player.createdAt}</p>
-            <p><strong>Updated at:</strong> ${player.updatedAt}</p>
-            <p><strong>Team ID:</strong> ${player.teamId}</p>
-            <p><strong>Cohort ID:</strong> ${player.cohortId}</p>
-            <button class="close-button">Close</button>
+        const playerEditElement = document.createElement('div');
+        playerEditElement.classList.add('player-edit');
+        playerEditElement.innerHTML = `
+        <form>
+            <label>Name: </label><input type="text" name="name" value="${player.name}" required><br><br>
+            <label>ID: </label><input type="number" name="id" value="${player.id}" required><br><br>
+            <label>Breed: </label><input type="text" name="breed" value="${player.breed}" required><br><br>
+            <label>Status: </label><select name="status" required>
+                <option selected="${player.status}">${player.status}</option>
+                <option value="bench">bench</option>
+                <option value="field">field</option>
+            </select><br><br>
+            <label>ImageUrl: </label><input type="url" name="imageUrl" value="${player.imageUrl}" required><br><br>
+            <label>TeamId: </label><input type="number" name="teamId" value="${player.teamId}" required><br><br>
+            <label>CohortId: </label><input type="number" name="cohortId" value="${player.cohortId}" required><br><br>
+            <input type="submit" value="Save">
+        </form>
+        <button class="cancel-button">Cancel</button>
         `;
 
-        playerContainer.appendChild(playerDetailsElememt);
+        playerContainer.appendChild(playerEditElement);
 
-        // add event listener to close button
-        const closeButton = playerDetailsElememt.querySelector('.close-button');
-        closeButton.addEventListener('click', () => {
-            playerDetailsElememt.remove();
+        playerContainer.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const name = document.getElementsByName('name')[0].value;
+            const id = document.getElementsByName('id')[0].value;
+            const breed = document.getElementsByName('breed')[0].value;
+            const status = document.getElementsByName('status')[0].value;
+            const imageUrl = document.getElementsByName('imageUrl')[0].value;
+            const createdAt = document.getElementsByName('name')[0].value;
+
+            //updatedAt should be created by the app
+            const updatedAt = new Date().getTime();
+
+            const teamId = document.getElementsByName('teamId')[0].value;
+            const cohortId = document.getElementsByName('cohortId')[0].value;
+
+            const updatedPlayer = {
+                id,
+                name,
+                breed,
+                status,
+                imageUrl,
+                createdAt,
+                updatedAt,
+                teamId,
+                cohortId
+            }
+
+            await updatePlayer(updatedPlayer);
+        //    await window.location.reload();
+        });
+
+        // add event listener to cancel button
+        const cancelButton = playerEditElement.querySelector('.cancel-button');
+        cancelButton.addEventListener('click', () => {
+            playerEditElement.remove();
             togglePlayerListVisibility('flex');
-        });*/
+        });
     } catch (err) {
         console.error(`Uh oh, trouble editing player #${playerId}!`, err);
     }
