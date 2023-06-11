@@ -50,16 +50,6 @@ const addNewPlayer = async (playerObj) => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                /*   body: JSON.stringify({
-                       name: playerObj.name,
-                       id: playerObj.id,
-                       breed: playerObj.breed,
-                       status:playerObj.status,
-                       imageUrl: playerObj.imageUrl,
-                       createdAt: playerObj.createdAt,
-                       teamId: playerObj.teamId,
-                       cohortId: playerObj.cohortId
-                   })*/
                 body: JSON.stringify(playerObj)
             });
         const newPlayer = await response.json();
@@ -72,7 +62,8 @@ const addNewPlayer = async (playerObj) => {
 
 const updatePlayer = async (playerObj) => {
     try {
-        const response = await fetch(`${APIURL}players/`,
+        const playerId = playerObj.id;
+        const response = await fetch(`${APIURL}players/${playerId}/`,
             {
                 method: 'PATCH',
                 headers: {
@@ -225,7 +216,6 @@ const renderAllPlayers = (playerList) => {
     }
 };
 
-
 /**
  * It renders a form to the DOM, and when the form is submitted, it adds a new player to the database,
  * fetches all players from the database, and renders them to the DOM.
@@ -319,7 +309,7 @@ const renderUpdatedPlayerForm = async (id) => {
 
         playerContainer.appendChild(playerEditElement);
 
-        playerContainer.addEventListener('submit', async (event) => {
+        playerEditElement.addEventListener('submit', async (event) => {
             event.preventDefault();
             const name = document.getElementsByName('name')[0].value;
             const id = document.getElementsByName('id')[0].value;
@@ -347,7 +337,7 @@ const renderUpdatedPlayerForm = async (id) => {
             }
 
             await updatePlayer(updatedPlayer);
-        //    await window.location.reload();
+            await window.location.reload();
         });
 
         // add event listener to cancel button
@@ -372,3 +362,22 @@ const init = async () => {
 }
 
 init();
+
+module.exports = {
+    togglePlayerListVisibility,
+    fetchAllPlayers,
+    fetchSinglePlayer,
+    addNewPlayer,
+    updatePlayer,
+    removePlayer,
+    fetchAllTeams,
+    renderSinglePlayerById,
+    renderAllPlayers,
+    renderNewPlayerForm,
+    renderUpdatedPlayerForm,
+    init,
+    playerContainer,
+    newPlayerFormContainer,
+    cohortName,
+    APIURL
+};
