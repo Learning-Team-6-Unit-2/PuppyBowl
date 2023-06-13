@@ -60,6 +60,7 @@ const addNewPlayer = async (playerObj) => {
     }
 };
 
+// the API does not allow patch requests
 const updatePlayer = async (playerObj) => {
     try {
         const playerId = await playerObj.id;
@@ -161,7 +162,7 @@ const renderSinglePlayerById = async (id) => {
  * @param playerList - an array of player objects
  * @returns the playerContainerHTML variable.
  */
-const renderAllPlayers = (playerList) => {
+const renderAllPlayers = async (playerList) => {
     try {
         //   console.log(playerList);
         playerContainer.innerHTML = '';
@@ -220,21 +221,19 @@ const renderAllPlayers = (playerList) => {
  * It renders a form to the DOM, and when the form is submitted, it adds a new player to the database,
  * fetches all players from the database, and renders them to the DOM.
  */
-const renderNewPlayerForm = () => {
+const renderNewPlayerForm = async () => {
     try {
         //createdAt and updatedAt should be created by the app, not the user. exclude them from the form
         let form = `
         <form>
             <label>Name: </label><input type="text" name="name" placeholder="" required><br><br>
-            <label>ID: </label><input type="number" name="id" placeholder="" required><br><br>
             <label>Breed: </label><input type="text" name="breed" placeholder="" required><br><br>
-            <label>Status: </label><select name="status" required>
+            <label>Status: </label><select name="status">
                 <option value="bench">bench</option>
                 <option value="field">field</option>
             </select><br><br>
-            <label>ImageUrl: </label><input type="url" name="imageUrl" placeholder="" required><br><br>
-            <label>TeamId: </label><input type="number" name="teamId" placeholder="" required><br><br>
-            <label>CohortId: </label><input type="number" name="cohortId" placeholder="" required><br><br>
+            <label>ImageUrl: </label><input type="url" name="imageUrl" placeholder=""><br><br>
+            <label>TeamId: </label><input type="number" name="teamId" placeholder=""><br><br>
             <input type="submit" value="Add new Player">
         </form>
         `
@@ -245,32 +244,26 @@ const renderNewPlayerForm = () => {
         newPlayerFormContainer.addEventListener('submit', async (event) => {
             event.preventDefault();
             const name = document.getElementsByName('name')[0].value;
-            const id = document.getElementsByName('id')[0].value;
             const breed = document.getElementsByName('breed')[0].value;
             const status = document.getElementsByName('status')[0].value;
             const imageUrl = document.getElementsByName('imageUrl')[0].value;
-
-            //createdAt and updateAt should be created by the app
-            const createdAt = new Date().getTime();
-
-            //updatedAt should be the same as createdAt when adding a new player. Change updatedAt if the player is edited and saved
-            const updatedAt = createdAt;
-
             const teamId = document.getElementsByName('teamId')[0].value;
-            const cohortId = document.getElementsByName('cohortId')[0].value;
 
             const newPlayer = {
-                id,
                 name,
                 breed,
                 status,
                 imageUrl,
-                createdAt,
-                updatedAt,
                 teamId,
-                cohortId
             }
 
+            //don't pass in unacceptable/empty values for optional inputs or the post will fail
+            if (imageUrl === '')
+                delete newPlayer.imageUrl;
+            if (teamId === '')
+                delete newPlayer.teamId;
+
+            debugger;
             await addNewPlayer(newPlayer);
             console.log(newPlayer);
             await window.location.reload();
@@ -292,16 +285,14 @@ const renderUpdatedPlayerForm = async (id) => {
         playerEditElement.innerHTML = `
         <form>
             <label>Name: </label><input type="text" name="name" value="${player.name}" required><br><br>
-            <label>ID: </label><input type="number" name="id" value="${player.id}" required><br><br>
             <label>Breed: </label><input type="text" name="breed" value="${player.breed}" required><br><br>
-            <label>Status: </label><select name="status" required>
+            <label>Status: </label><select name="status">
                 <option selected="${player.status}">${player.status}</option>
                 <option value="bench">bench</option>
                 <option value="field">field</option>
             </select><br><br>
-            <label>ImageUrl: </label><input type="url" name="imageUrl" value="${player.imageUrl}" required><br><br>
-            <label>TeamId: </label><input type="number" name="teamId" value="${player.teamId}" required><br><br>
-            <label>CohortId: </label><input type="number" name="cohortId" value="${player.cohortId}" required><br><br>
+            <label>ImageUrl: </label><input type="url" name="imageUrl" value="${player.imageUrl}"><br><br>
+            <label>TeamId: </label><input type="number" name="teamId" value="${player.teamId}"><br><br>
             <input type="submit" value="Save">
         </form>
         <button class="cancel-button">Cancel</button>
@@ -325,16 +316,18 @@ const renderUpdatedPlayerForm = async (id) => {
             const cohortId = document.getElementsByName('cohortId')[0].value;
 
             const updatedPlayer = {
-                id,
                 name,
                 breed,
                 status,
                 imageUrl,
-                createdAt,
-                updatedAt,
                 teamId,
-                cohortId
             }
+
+            //don't pass in unacceptable/empty values for optional inputs or the post will fail
+            if (imageUrl === '')
+                delete upadtedPlayer.imageUrl;
+            if (teamId === '')
+                delete updatedPlayer.teamId;
 
             await updatePlayer(updatedPlayer);
             await window.location.reload();
@@ -364,20 +357,20 @@ const init = async () => {
 init();
 
 module.exports = {
- /*   togglePlayerListVisibility,
-    fetchAllPlayers,
-    fetchSinglePlayer,
-    addNewPlayer,
-    updatePlayer,
-    removePlayer,
-    fetchAllTeams,
-    renderSinglePlayerById,
-    renderAllPlayers,
-    renderNewPlayerForm,
-    renderUpdatedPlayerForm,
-    init,
-    playerContainer,
-    newPlayerFormContainer,*/
+    /*   togglePlayerListVisibility,
+       fetchAllPlayers,
+       fetchSinglePlayer,
+       addNewPlayer,
+       updatePlayer,
+       removePlayer,
+       fetchAllTeams,
+       renderSinglePlayerById,
+       renderAllPlayers,
+       renderNewPlayerForm,
+       renderUpdatedPlayerForm,
+       init,
+       playerContainer,
+       newPlayerFormContainer,*/
     cohortName,
     APIURL
 };
