@@ -58,6 +58,11 @@ input {
   border: none;
 }
 
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: red;
+  opacity: 0.75; /* Firefox */
+}
+
 #all-players-container {
   display: flex;
   flex-flow: row wrap;

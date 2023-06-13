@@ -226,14 +226,14 @@ const renderNewPlayerForm = async () => {
         //createdAt and updatedAt should be created by the app, not the user. exclude them from the form
         let form = `
         <form>
-            <label>Name: </label><input type="text" name="name" placeholder="" required><br><br>
-            <label>Breed: </label><input type="text" name="breed" placeholder="" required><br><br>
+            <label>Name: </label><input type="text" name="name" placeholder="required" required><br><br>
+            <label>Breed: </label><input type="text" name="breed" placeholder="required" required><br><br>
             <label>Status: </label><select name="status">
                 <option value="bench">bench</option>
                 <option value="field">field</option>
             </select><br><br>
-            <label>ImageUrl: </label><input type="url" name="imageUrl" placeholder=""><br><br>
-            <label>TeamId: </label><input type="number" name="teamId" placeholder=""><br><br>
+            <label>ImageUrl: </label><input type="url" name="imageUrl" placeholder="optional"><br><br>
+            <label>TeamId: </label><input type="number" name="teamId" placeholder="optional"><br><br>
             <input type="submit" value="Add new Player">
         </form>
         `
