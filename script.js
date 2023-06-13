@@ -62,7 +62,7 @@ const addNewPlayer = async (playerObj) => {
 
 const updatePlayer = async (playerObj) => {
     try {
-        const playerId = playerObj.id;
+        const playerId = await playerObj.id;
         const response = await fetch(`${APIURL}players/${playerId}/`,
             {
                 method: 'PATCH',
@@ -364,7 +364,7 @@ const init = async () => {
 init();
 
 module.exports = {
-    togglePlayerListVisibility,
+ /*   togglePlayerListVisibility,
     fetchAllPlayers,
     fetchSinglePlayer,
     addNewPlayer,
@@ -377,7 +377,7 @@ module.exports = {
     renderUpdatedPlayerForm,
     init,
     playerContainer,
-    newPlayerFormContainer,
+    newPlayerFormContainer,*/
     cohortName,
     APIURL
 };
